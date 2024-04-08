@@ -17,7 +17,7 @@ jobs:
       id: cache-spark
       uses: actions/cache@v4
       with:
-        path: /spark-3.4.1-bin-hadoop3.tgz
+        path: ~/spark-3.4.1-bin-hadoop3.tgz
         key: ${{ runner.os }}-spark
 
     - uses: actions/setup-python@v5
@@ -37,9 +37,12 @@ jobs:
       with:
         spark-version: '3.4.1'
         hadoop-version: '3'
+
+    - name: Install Requirements
+      run: pip install -r requirements.txt
         
     - name: Run Pytest
-      run: echo "Testinh"
+      run: echo "Testing"
       
     
     - run: spark-submit --version
