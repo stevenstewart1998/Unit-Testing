@@ -41,6 +41,9 @@ jobs:
       with:
         spark-version: '3.4.1'
         hadoop-version: '3'
+
+    - name: Check CWD
+      run: ls
     
     
     - name: Install Requirements
