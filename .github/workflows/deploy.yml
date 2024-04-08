@@ -18,7 +18,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: spark-3.4.1-bin-hadoop3.tgz
-        key: ${{ runner.os }}-${{ hashFiles('**requirements.txt') }}
+        key: ${{ runner.os }}-spark
 
     - uses: actions/setup-python@v5
       name: Setup Python
