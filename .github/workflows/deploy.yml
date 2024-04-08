@@ -10,6 +10,14 @@ jobs:
     name: Run Unit Tests
     runs-on: ubuntu-latest
     steps:
+
+    - name: Cache Spark
+      id: cache-spark
+      uses: actions/cache@v4
+      with:
+        path: spark-3.4.1-bin-hadoop3.tgz
+        key: ${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+
     - uses: actions/setup-python@v5
       name: Setup Python
       with:
@@ -21,8 +29,9 @@ jobs:
         java-version: '21'
         distribution: temurin
     
-    - uses: vemonet/setup-spark@v1
-      name: Setup Spark
+    - name: Setup Spark
+      uses: vemonet/setup-spark@v1
+      if: steps.cache-spark.outputs.cache-hit != 'true'
       with:
         spark-version: '3.4.1'
         hadoop-version: '3'
