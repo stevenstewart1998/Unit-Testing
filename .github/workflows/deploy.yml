@@ -41,16 +41,10 @@ jobs:
       with:
         spark-version: '3.4.1'
         hadoop-version: '3'
-
-    - name: Check CWD
-      run: ls
-    
     
     - name: Install Requirements
       run: pip install -r requirements.txt
         
     - name: Run Pytest
-      run: echo "Testing"
+      run: spark-submit --version
       
-    
-    - run: spark-submit --version
