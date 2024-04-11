@@ -24,7 +24,7 @@ def spark_fixture():
 
 @pytest.fixture
 def modules_list():
-    file_name = "src\harvard_rankings_transform\src\harvard_rankings_transform.py"
+    file_name = "src/air_pollution_analysis/src/air_pollution_analysis.py"
     f = open(file_name, "r").read()
     pattern = r"(# BEGIN FUNC)[\s\S.]*(# END FUNC)"
     funcs = re.search(pattern=pattern, string=f).group()
