@@ -21,7 +21,7 @@ jobs:
       id: cache-spark
       uses: actions/cache@v4
       with:
-        path: /home/runner/work/Unit-Testing/spark-3.4.1-bin-hadoop3
+        path: /home/runner/work/Unit-Testing/spark-3.5.0-bin-hadoop3
         key: ${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
 
     - uses: actions/setup-python@v5
