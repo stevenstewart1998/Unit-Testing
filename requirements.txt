@@ -1,3 +1,5 @@
-pyspark
+pyspark==3.5.0
 pytest
 pandas
+pyspark_test
+pyarrow

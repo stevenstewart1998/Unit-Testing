@@ -39,12 +39,12 @@ jobs:
       uses: vemonet/setup-spark@v1
       if: steps.cache-spark.outputs.cache-hit != 'true'
       with:
-        spark-version: '3.4.1'
+        spark-version: '3.5.0'
         hadoop-version: '3'
     
     - name: Install Requirements
       run: pip install -r requirements.txt
         
     - name: Run Pytest
-      run: spark-submit --version
+      run:   python -m pytest src --continue-on-collection-errors -v
       
