@@ -13,10 +13,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 from zipfile import ZipFile
 from typing import Optional, List
 
-dataset_name = "sahirmaharajj/air-pollution-dataset"
-file_name = "Air_Quality.csv"
-data_path = "src/harvard_rankings_transform/data"
-spark: SparkSession = SparkSession.builder.getOrCreate()
+spark: SparkSession = SparkSession.Builder().getOrCreate()
 
 def instantiate_kaggle_api():
     api = KaggleApi()
@@ -47,6 +44,9 @@ def read_dataset(spark: SparkSession,
     unzipped_file_path = f"{path}/{file_name}"
     df = spark.read.csv(path=unzipped_file_path, header=True)
     return df
+
+def write_to_csv(df: DataFrame):
+    df.show(100, truncate=False)
 
 # BEGIN FUNC
 
@@ -85,24 +85,29 @@ def agg_by_metric(df: DataFrame, metrics: List[col]) -> DataFrame:
 
 # END FUNC
 
-def write_to_csv(df: DataFrame):
-    df.show(100, truncate=False)
+if __name__ == "__main__":
+
+    dataset_name = "sahirmaharajj/air-pollution-dataset"
+    file_name = "Air_Quality.csv"
+    data_path = "src/harvard_rankings_transform/data"
 
 
-api = instantiate_kaggle_api()
-df = read_dataset(spark, api, dataset_name, file_name, data_path)
+    api = instantiate_kaggle_api()
+    df = read_dataset(spark, api, dataset_name, file_name, data_path)
 
-if not df:
-    raise Exception("Dataset failed to be returned")
-
-
-metric_list = ["Indicator ID", "Name", "Geo Join ID", "Geo Place Name"]
-
-df_metrics = get_columns(df, metric_list) 
-df_metrics = df_metrics.withColumn("year", parse_year(col("Start_Date")))
-df_metrics = df_metrics.drop("Start_Date")
-df_agg = agg_by_metric(df_metrics, metric_list)
+    if not df:
+        raise Exception("Dataset failed to be returned")
 
 
-write_to_csv(df_agg)
+    metric_list = ["Indicator ID", "Name", "Geo Join ID", "Geo Place Name"]
+
+    df_metrics = get_columns(df, metric_list) 
+    df_metrics = df_metrics.withColumn("year", parse_year(col("Start_Date")))
+    df_metrics = df_metrics.drop("Start_Date")
+    df_agg = agg_by_metric(df_metrics, metric_list)
+
+
+    write_to_csv(df_agg)
+
+    spark.stop()
 
